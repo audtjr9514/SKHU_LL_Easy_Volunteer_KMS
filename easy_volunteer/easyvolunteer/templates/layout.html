@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+상속을 해줄 레이아웃 페이지<br>
+
+{% if user.is_authenticated %}
+<p>반갑습니다 {{ user.name }} 회원님 </p>
+<p><a href="{% url 'logout' %}">로그아웃</a></p>
+{% else %}
+<p> 로그인이 필요합니다.</p>
+<p><a href="{% url 'organ_signup' %}">organ_signup</a></p>
+<p><a href="{% url 'user_signup' %}">user_signup</a></p>
+<p><a href="{% url 'signin' %}">signin</a></p>
+{% endif %}
+{% block content %} <!--각 페이지의 내용이 들어갈 부분 -->
+
+{% endblock %}

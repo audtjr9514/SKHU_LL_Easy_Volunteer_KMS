@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% load staticfiles%}
+
+{% block content %}
+로그인 페이지
+<form method="post" action ="">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">로그인하기</button>
+</form>
+{% endblock %}
