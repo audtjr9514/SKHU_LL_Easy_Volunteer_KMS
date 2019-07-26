@@ -11,7 +11,7 @@ class SigninForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['name', 'email', 'password', 'codeNum', 'phoneNum',
+        fields = ['email','name', 'password', 'codeNum', 'phoneNum',
                   'job', 'license', 'area', 'another', 'image']
 
 # 기관회원 회원가입

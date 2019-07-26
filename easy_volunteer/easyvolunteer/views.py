@@ -20,11 +20,35 @@ def select(request):
 
 # 기관 회원가입 페이지
 def organ_signup(request):
-    return render(request, 'organ_signup.html')
+    if request.method == "POST":
+        organ_user_form = OrganUserForm(request.POST)
+        organ_form = OrganForm(request.POST)
+        if organ_user_form.is_valid() and organ_form.is_valid():
+            organ_user = User.objects.create_user(
+                name = organ_user_form.cleaned_data['name'], 
+                email = organ_user_form.cleaned_data['email'], 
+                password = organ_user_form.cleaned_data['password'], 
+                phoneNum= organ_user_form.cleaned_data['phoneNum'], 
+                area = organ_user_form.cleaned_data['area']                
+            )
+            organ = Organ.objects.create(
+                crew=organ_form.cleaned_data["crew"],
+                head=organ_form.cleaned_data['head'],
+                url=organ_form.cleaned_data['url']
+            )
+            organ_user.is_organ = True
+            organ_user.organ = organ
+            organ_user.save()
+            login(request, organ_user)
+            return redirect('main')    
+    else:
+        organ_user_form = OrganUserForm()
+        organ_form = OrganForm()
+        return render(request, 'organ_signup.html', {'organ_user_form': organ_user_form, 'organ_form': organ_form})
+
 
 # 일반 회원가입 페이지
 def user_signup(request):
-    # return render(request, 'user_signup.html')
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():

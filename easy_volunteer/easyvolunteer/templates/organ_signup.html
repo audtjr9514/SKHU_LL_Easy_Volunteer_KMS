@@ -2,5 +2,11 @@
 {% load staticfiles%}
 
 {% block content %}
-기관 회원가입 페이지
+기관 회원 가입 페이지
+<form method="post" action ="">
+    {% csrf_token %}
+    {{organ_user_form.as_p}}
+    {{organ_form.as_p}}
+    <button type="submit">회원가입하기</button>
+</form>
 {% endblock %}
