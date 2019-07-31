@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
 from .models import User, Organ, Service, Area, Job, Product, Brand
-from .forms import UserForm, OrganUserForm, OrganForm, SigninForm
+from .forms import SigninForm, UserForm, OrganUserForm, OrganForm, ServiceForm
 
 # 맨 첫화면 _ 메인 페이지
 def main(request):
@@ -96,8 +96,15 @@ def organ_mypage(request):
     return render(request, 'organ_mypage.html')
 
 # 기관에서 봉사 등록 페이지
-def register(request):
-    return render(request, 'register.html')
+def register(request, service=None):
+    if request.method == "POST":
+        form = ServiceForm(request.POST, instance=service)
+        service = form.save(commit=False)
+        service
+        return render(request, 'main.html')
+    else:
+        form = ServiceForm()
+        return render(request, 'register.html', {'form': form})
 
 # 봉사활동을 선택할 수 있는 페이지
 def quest(request):

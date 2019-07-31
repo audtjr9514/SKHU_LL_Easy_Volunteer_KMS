@@ -61,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = ('users')
         swappable = 'AUTH_USER_MODEL'
 
-    def __str(self):
+    def __str__(self):
         return self.name
 
 # 기관 유저에 대해 이어줄 테이블 
@@ -69,9 +69,8 @@ class Organ(models.Model):
     crew = models.CharField(max_length=20, verbose_name="소속")                # 소속
     head = models.CharField(max_length=20, verbose_name="책임자명")             # 책임자명
     url = models.CharField(max_length=500, default="", verbose_name="URL")     # 인터넷 주소
-    def __str(self):
-        return self.Cuser.username
-
+    def __str__(self):
+        return self.user_organ.name
 # 봉사 활동 -> 일반 유저와 기관 유저와 연결
 class Service(models.Model):
     name = models.CharField(max_length=40)          # 봉사활동명

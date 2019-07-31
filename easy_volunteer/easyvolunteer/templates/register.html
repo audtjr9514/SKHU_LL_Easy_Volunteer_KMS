@@ -2,5 +2,19 @@
 {% load staticfiles%}
 
 {% block content %}
-기관에서 봉사 올리는 페이지
+기관에서 봉사 올리는 페이지<br>
+{% if user.is_authenticated %}
+    {% if user.is_organ %}
+        기관 회원입니다.<br>
+        <form method="post" action ="">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">로그인하기</button>
+        </form>
+    {% else %}
+        일반회원은 이용할 수 없는 서비스입니다.
+    {% endif %}
+{% else %}
+<p> 로그인이 필요한 서비스입니다.</p>
+{% endif %}
 {% endblock %}

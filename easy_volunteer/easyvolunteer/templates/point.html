@@ -2,5 +2,10 @@
 {% load staticfiles%}
 
 {% block content %}
-포인트 사용 페이지
+포인트 사용페이지
+{% if user.is_authenticated %}
+로그인이 되어 있습니다.
+{% else %}
+<p> 로그인이 필요한 서비스입니다.</p>
+{% endif %}
 {% endblock %}
