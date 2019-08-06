@@ -3,7 +3,7 @@
 
 {% block content %}
 기관 회원 가입 페이지
-<form method="post" action ="">
+<form method="POST" action ="">
     {% csrf_token %}
     {{organ_user_form.as_p}}
     {{organ_form.as_p}}

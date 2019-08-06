@@ -52,10 +52,11 @@ def user_signup(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            new_user = User.objects.create_user(
+            if(form.cleaned_data["password1"] == form.cleaned_data["password2"]):
+                new_user = User.objects.create_user(
                 name=form.cleaned_data["name"], 
                 email=form.cleaned_data["email"],
-                password=form.cleaned_data["password"],
+                password=form.cleaned_data["password1"],
                 codeNum=form.cleaned_data["codeNum"],
                 phoneNum=form.cleaned_data["phoneNum"],
                 job=form.cleaned_data["job"],
@@ -64,8 +65,8 @@ def user_signup(request):
                 another=form.cleaned_data["another"],
                 image=form.cleaned_data["image"]
             )
-            login(request, new_user)
-            return redirect('main')
+                login(request, new_user)
+                return redirect('main')
     else:
         form = UserForm()
         return render(request, 'user_signup.html', {'form': form})
@@ -91,6 +92,15 @@ def signin(request):
 def mypage(request):
     return render(request, 'mypage.html')
 
+
+def user_update(request, user=None):
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save
+    return render(request, 'user_update.html')
+
 # 기관용 마이페이지
 def organ_mypage(request):
     return render(request, 'organ_mypage.html')
@@ -99,9 +109,11 @@ def organ_mypage(request):
 def register(request, service=None):
     if request.method == "POST":
         form = ServiceForm(request.POST, instance=service)
-        service = form.save(commit=False)
-        service
-        return render(request, 'main.html')
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.organ = request.user
+            service.save()
+            return render(request, 'main.html')
     else:
         form = ServiceForm()
         return render(request, 'register.html', {'form': form})

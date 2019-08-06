@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% load staticfiles%}
+
+{% block content %}
+회원의 개인정보 수정
+<form method="POST"> 
+    {% csrf_token %}
+    {{form.as_table}}
+    <button type = "submit">저장</button>
+    </form>
+{% endblock %}

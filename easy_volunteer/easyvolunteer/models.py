@@ -40,8 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField('사용중', default=True)
     date_joined = models.DateTimeField('가입일', default=timezone.now)
     # 커스터마이징
-    codeNum = models.IntegerField(blank=True, null=True, verbose_name="주민번호")                # 주민 번호
-    phoneNum = models.IntegerField(blank=True, null=True, verbose_name="전화번호")               # 핸드폰 번호
+    codeNum = models.DateTimeField(blank=True, null=True, verbose_name="생년월일")                # 주민 번호
+    phoneNum = models.CharField(max_length=11,blank=True, null=True, verbose_name="전화번호")               # 핸드폰 번호
     job = models.ForeignKey('Job', on_delete=models.CASCADE, related_name='user_job', blank=True, null=True, verbose_name="직업")# 직업
     license = models.CharField(max_length=20, blank=True, null=True, verbose_name="자격증")    # 자격증
     level = models.IntegerField(default=1)  # 레벨
@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     another = models.CharField(max_length=100, blank=True, null=True, verbose_name="기타 특이사항")   # 비고
     image = models.ImageField(upload_to='images/', blank=True, null=True, verbose_name="사진")  # 이미지
     is_organ = models.BooleanField(default=False, verbose_name="기관 여부") # 일반 회원인지, 기관 회원인지 확인
-    organ = models.OneToOneField('Organ', on_delete=models.CASCADE,related_name='user_organ', blank=True, null=True)  # 기관에 대한 정보
+    organ = models.OneToOneField('Organ', on_delete=models.CASCADE, related_name='user_organ', blank=True, null=True)  # 기관에 대한 정보
 
     objects = UserManager()
     USERNAME_FIELD = 'email'    # email을 사용자의 식별자로 설정

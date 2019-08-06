@@ -9,9 +9,9 @@
         <form method="post" action ="">
             {% csrf_token %}
             {{form.as_p}}
-            <button type="submit">로그인하기</button>
+            <button type="submit">해당 봉사활동 등록하기</button>
         </form>
-    {% else %}
+    {% else %}    
         일반회원은 이용할 수 없는 서비스입니다.
     {% endif %}
 {% else %}
