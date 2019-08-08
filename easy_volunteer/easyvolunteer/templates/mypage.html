@@ -4,7 +4,14 @@
 {% block content %}
 일반 회원 마이 페이지
 {% if user.is_authenticated %}
-로그인이 되어 있습니다.
+로그인이 되어 있습니다.<br>
+일반 회원 마이 페이지<br>
+현재 나의 레벨: {{ user.level }} level<br>
+현재 나의 포인트: {{ user.point }} point<br>
+현재 수행중인 퀘스트:
+{% for User in user.service_user.all %}
+{{ User }}<br>
+{% endfor %}
 {% else %}
 <p> 로그인이 필요한 서비스입니다.</p>
 {% endif %}

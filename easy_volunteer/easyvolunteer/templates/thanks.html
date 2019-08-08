@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% if errormessage %}
+        <p>{{ errormessage }}</p>
+    {% else %}
+        <p>{{ username }}님 {{ product_name }} 교환이 완료되었습니다. 많이 참여해주세요 쉬봉.</p>
+        <h1>현재 잔여 포인트 {{ user_point }} 입니다.</h1>
+    {% endif %}
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from django import forms
 
 
 class UserManager(BaseUserManager):
@@ -32,6 +33,13 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 # 일반 유저
+
+
+def phone_number_validator(value):
+    if value.count('-') != 2 and len(value) != 0:
+        raise forms.ValidationError("'-'를 포함해주세요")
+    return value
+
 class User(AbstractBaseUser, PermissionsMixin):
     # 기본 내용
     email = models.EmailField('이메일', unique=True)
@@ -41,16 +49,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField('가입일', default=timezone.now)
     # 커스터마이징
     codeNum = models.DateTimeField(blank=True, null=True, verbose_name="생년월일")                # 주민 번호
-    phoneNum = models.CharField(max_length=11,blank=True, null=True, verbose_name="전화번호")               # 핸드폰 번호
+    # 핸드폰 번호
+    phoneNum = models.CharField(max_length=13, blank=True, validators=[phone_number_validator], null=True, verbose_name="전화번호")
     job = models.ForeignKey('Job', on_delete=models.CASCADE, related_name='user_job', blank=True, null=True, verbose_name="직업")# 직업
     license = models.CharField(max_length=20, blank=True, null=True, verbose_name="자격증")    # 자격증
-    level = models.IntegerField(default=1)  # 레벨
-    point = models.IntegerField(default=0)  # 가지고 있는포인트
+    level = models.IntegerField(default=1, verbose_name="레벨")  # 레벨
+    point = models.IntegerField(default=0, verbose_name="포인트")  # 가지고 있는포인트
     area = models.ForeignKey('Area', on_delete=models.CASCADE, related_name='user_area', blank=True, null=True, verbose_name="지역")  # 지역
     another = models.CharField(max_length=100, blank=True, null=True, verbose_name="기타 특이사항")   # 비고
     image = models.ImageField(upload_to='images/', blank=True, null=True, verbose_name="사진")  # 이미지
     is_organ = models.BooleanField(default=False, verbose_name="기관 여부") # 일반 회원인지, 기관 회원인지 확인
-    organ = models.OneToOneField('Organ', on_delete=models.CASCADE, related_name='user_organ', blank=True, null=True)  # 기관에 대한 정보
+    organ = models.OneToOneField('Organ', on_delete=models.CASCADE, related_name='user_organ', blank=True, null=True, verbose_name="기관 정보")  # 기관에 대한 정보
 
     objects = UserManager()
     USERNAME_FIELD = 'email'    # email을 사용자의 식별자로 설정
@@ -96,7 +105,7 @@ class Area(models.Model):
 class Job(models.Model):
     job = models.CharField(max_length=20)   # 직업
     def __str__(self):
-        return self.name
+        return self.job
 
 # 상품
 class Product(models.Model):

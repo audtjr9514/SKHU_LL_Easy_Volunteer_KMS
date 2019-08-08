@@ -3,7 +3,7 @@
 
 {% block content %}
 일반 회원의 회원가입 페이지
-<form method="post" action ="">
+<form method="POST" action ="">
     {% csrf_token %}
     {{form.as_p}}
     <button type="submit">회원가입하기</button>

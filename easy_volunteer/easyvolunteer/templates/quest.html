@@ -6,6 +6,19 @@
 {% if user.is_authenticated %}
 <p>반갑습니다 {{ user.name }} 회원님 </p>
 <p><a href="{% url 'logout' %}">로그아웃</a></p>
+{% for Service in service.all %}
+    {% if user.level >= Service.level  %}
+        <p>{{ Service.name }} </p>
+        <p>{{ Service.level }}레벨 이상</p>
+        <P>보상 {{ Service.point }} 포인트</P>
+        <p>기관명:{{ Service.organ.organ.crew }}</p>
+        <p>제한인원: {{ Service.number }}</p>
+        <form method = "POST" action= "{%url 'quest_update' Service.id user.id  %}">
+        {% csrf_token %}
+        <button><input type="submit" value="신청하기"></button>
+        </form>
+    {% endif %}
+{% endfor %}
 {% else %}
 <p> 로그인이 필요한 서비스입니다.</p>
 {% endif %}

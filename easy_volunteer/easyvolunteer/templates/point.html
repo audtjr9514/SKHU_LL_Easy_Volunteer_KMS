@@ -2,9 +2,21 @@
 {% load staticfiles%}
 
 {% block content %}
-포인트 사용페이지
+포인트 사용페이지<br>
 {% if user.is_authenticated %}
 로그인이 되어 있습니다.
+{% for Brand in brands.all %}
+    <h1>{{ Brand.img }}</h1>
+    <h1>{{ Brand.name }}</h1>
+    {% for Product in Brand.products.all %}
+        <p>{{ Product.name }}</p>
+        <p>{{ Product.point }}</p>
+        <form method = "POST" action= "{%url 'point_update' Product.id user.id %}">
+            {% csrf_token %}
+            <button><input type="submit" value="교환하기"></button>
+        </form>
+    {% endfor %}
+{% endfor %}
 {% else %}
 <p> 로그인이 필요한 서비스입니다.</p>
 {% endif %}
